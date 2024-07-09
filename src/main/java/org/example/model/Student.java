@@ -1,7 +1,7 @@
 package org.example.model;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +20,6 @@ import org.example.validator.custom_annotation.EmailUniquenessCheck;
 @NoArgsConstructor
 @SuperBuilder
 public class Student {
-
-    @Min(value = 0, message = "ID cannot be less than or equal to 0")
     private int id;
 
     @Size(min = 2, max = 32)

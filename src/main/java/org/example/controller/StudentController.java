@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.model.Student;
 import org.example.service.StudentService;
+import org.example.validator.ExistenceStudentValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,16 +27,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
+    private final ExistenceStudentValidator existenceStudentValidator;
 
     @GetMapping("/create")
-    public String createStudentGet(Student student, Model model) {
+    public String createStudent(Student student, Model model) {
         model.addAttribute("student", student);
 
         return "createStudent";
     }
 
     @PostMapping("/create")
-    public String createStudentPost(@Valid Student student, BindingResult bindingResult) throws SQLException {
+    public String createStudent(@Valid Student student, BindingResult bindingResult) throws SQLException {
         String url;
 
         if (bindingResult.hasErrors()) {
@@ -50,35 +53,37 @@ public class StudentController {
     }
 
     @GetMapping("/get")
-    public String getStudentsGet(Student student, Model model) throws SQLException {
+    public String getStudents(Model model) throws SQLException {
         Map<String, List<Student>> students = studentService.getStudents();
         model.addAttribute("students", students);
-        model.addAttribute("student", student);
 
         return "studentInfo";
     }
 
     @GetMapping("/delete")
     public String deleteStudentGet(Student student, Model model) {
-        model.addAttribute("student", student);
+        model.addAttribute("id", student.getId());
 
         return "deleteStudent";
     }
 
     @PostMapping("/delete")
-    public String deleteStudentPost(@Valid Student student, BindingResult bindingResult) throws SQLException {
+    public String deleteStudent(@RequestParam Integer id, Model model) throws SQLException {
         String url;
 
-        if (bindingResult.hasErrors()) {
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                System.out.println(error);
-            }
-            url = "deleteStudent";
-        } else {
-            studentService.deleteStudent(student.getId());
-            url = "redirect:/student/delete";
-        }
+        if (existenceStudentValidator.isValidID(id)) {
+            studentService.deleteStudent(id);
 
+            url = "redirect:/student/delete";
+        } else {
+            System.out.println("ID is not valid");
+
+            model.addAttribute("id", id);
+
+            url = "deleteStudent";
+        }
         return url;
     }
 }
+
+

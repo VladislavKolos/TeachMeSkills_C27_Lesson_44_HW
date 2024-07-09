@@ -7,12 +7,11 @@
 <body>
 <div class="container">
     <h1 class="mt-4">Delete Student</h1>
-    <form th:action="@{/student/delete}" th:object="${student}" method="post" class="mt-4">
+    <form th:action="@{/student/delete}" method="post" class="mt-4">
         <div class="form-group">
             <label for="id">Student ID:</label>
-            <input type="number" id="id" th:field="*{id}" class="form-control"/>
+            <input type="number" id="id" name="id" class="form-control"/>
             <div class="text-danger" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
-            <div class="text-danger" th:if="${student.id == 0}">Invalid ID. Please enter a valid Student ID.</div>
         </div>
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
