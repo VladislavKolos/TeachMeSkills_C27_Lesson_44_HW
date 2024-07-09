@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Student Info</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Student Info</h1>
+    <div th:if="${students.isEmpty()}">
+        <p class="alert alert-warning">No students have been added yet.</p>
+    </div>
+    <div th:unless="${students.isEmpty()}">
+        <div th:each="groupEntry : ${students.entrySet()}">
+            <h2 class="mt-4">Group: <span th:text="${groupEntry.key}"></span></h2>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="student : ${groupEntry.value}">
+                    <span th:text="${student.name}"></span> -
+                    <span th:text="${student.email}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a th:href="@{/student/create}" class="btn btn-primary">Create New Student</a>
+    </div>
+</div>
+</body>
+</html>

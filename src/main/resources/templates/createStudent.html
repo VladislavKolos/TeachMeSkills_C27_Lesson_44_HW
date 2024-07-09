@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Create Student</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Create Student</h1>
+    <form th:action="@{/student/create}" th:object="${student}" method="post" class="mt-4">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="form-group">
+            <label for="group">Group:</label>
+            <input type="text" id="group" th:field="*{group}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('group')}" th:errors="*{group}"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+    <div class="mt-4">
+        <a th:href="@{/student/get}" class="btn btn-secondary">View All Students</a>
+    </div>
+</div>
+</body>
+</html>
