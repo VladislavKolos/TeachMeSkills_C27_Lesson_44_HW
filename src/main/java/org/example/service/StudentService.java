@@ -25,11 +25,12 @@ public class StudentService {
 
     /**
      * Creates a new student in the database.
+     *
      * @param student a Student object containing information about the student
      * @throws SQLException if the SQL-query failed
      */
     public void createStudent(Student student) throws SQLException {
-        Connection connection = postgresUtil.getConnection();
+        Connection connection = connectionToDataBase();
         connection.setAutoCommit(false);
 
         PreparedStatement preparedStatement = null;
@@ -49,7 +50,7 @@ public class StudentService {
         } catch (SQLException e) {
             connection.rollback();
             e.printStackTrace();
-            System.out.println("Exception!!!");
+            System.out.println("SQL Exception!!!");
 
         } finally {
             if (preparedStatement != null) {
@@ -63,11 +64,12 @@ public class StudentService {
 
     /**
      * Returns a list of students grouped by group.
+     *
      * @return Map, where the key is the name of the group and the value is the list of students in this group
      * @throws SQLException if the SQL-query failed
      */
     public Map<String, List<Student>> getStudents() throws SQLException {
-        Connection connection = postgresUtil.getConnection();
+        Connection connection = connectionToDataBase();
 
         PreparedStatement preparedStatement = null;
         ResultSet preparedResultSet = null;
@@ -93,7 +95,7 @@ public class StudentService {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Exception!!!");
+            System.out.println("SQL Exception!!!");
 
         } finally {
             if (preparedResultSet != null) {
@@ -113,11 +115,12 @@ public class StudentService {
 
     /**
      * Removes a student from the database by his ID.
+     *
      * @param id ID of the student to be deleted
      * @throws SQLException if the SQL-query failed
      */
     public void deleteStudent(int id) throws SQLException {
-        Connection connection = postgresUtil.getConnection();
+        Connection connection = connectionToDataBase();
         connection.setAutoCommit(false);
 
         PreparedStatement preparedStatement = null;
@@ -133,7 +136,7 @@ public class StudentService {
         } catch (SQLException e) {
             connection.rollback();
             e.printStackTrace();
-            System.out.println("Exception!!!");
+            System.out.println("SQL Exception!!!");
 
         } finally {
             if (preparedStatement != null) {
@@ -143,5 +146,18 @@ public class StudentService {
             connection.setAutoCommit(true);
             connection.close();
         }
+    }
+
+    private Connection connectionToDataBase() {
+        Connection connection = null;
+
+        try {
+            connection = postgresUtil.getConnection();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL Exception!!!");
+        }
+        return connection;
     }
 }

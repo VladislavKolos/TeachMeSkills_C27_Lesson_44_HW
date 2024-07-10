@@ -2,7 +2,7 @@ package org.example.validator.custom_annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.example.validator.custom_validator.EmailUniquenessValidator;
+import org.example.validator.custom_validator.StudentValidator;
 
 import java.lang.annotation.*;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * Annotation for checking the uniqueness of email.
  */
 @Documented
-@Constraint(validatedBy = EmailUniquenessValidator.class)
+@Constraint(validatedBy = StudentValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EmailUniquenessCheck {

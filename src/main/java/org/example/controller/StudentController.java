@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.model.Student;
 import org.example.service.StudentService;
-import org.example.validator.ExistenceStudentValidator;
+import org.example.validator.custom_validator.StudentValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +27,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
-    private final ExistenceStudentValidator existenceStudentValidator;
+    private final StudentValidator studentValidator;
 
     @GetMapping("/create")
     public String createStudent(Student student, Model model) {
@@ -71,7 +71,7 @@ public class StudentController {
     public String deleteStudent(@RequestParam Integer id, Model model) throws SQLException {
         String url;
 
-        if (existenceStudentValidator.isValidID(id)) {
+        if (studentValidator.isValidID(id)) {
             studentService.deleteStudent(id);
 
             url = "redirect:/student/delete";
