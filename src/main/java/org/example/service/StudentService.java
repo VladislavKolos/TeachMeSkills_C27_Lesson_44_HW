@@ -30,7 +30,7 @@ public class StudentService {
      * @throws SQLException if the SQL-query failed
      */
     public void createStudent(Student student) throws SQLException {
-        Connection connection = connectionToDataBase();
+        Connection connection = postgresUtil.getConnection();
         connection.setAutoCommit(false);
 
         PreparedStatement preparedStatement = null;
@@ -69,7 +69,7 @@ public class StudentService {
      * @throws SQLException if the SQL-query failed
      */
     public Map<String, List<Student>> getStudents() throws SQLException {
-        Connection connection = connectionToDataBase();
+        Connection connection = postgresUtil.getConnection();
 
         PreparedStatement preparedStatement = null;
         ResultSet preparedResultSet = null;
@@ -120,7 +120,7 @@ public class StudentService {
      * @throws SQLException if the SQL-query failed
      */
     public void deleteStudent(int id) throws SQLException {
-        Connection connection = connectionToDataBase();
+        Connection connection = postgresUtil.getConnection();
         connection.setAutoCommit(false);
 
         PreparedStatement preparedStatement = null;
@@ -146,18 +146,5 @@ public class StudentService {
             connection.setAutoCommit(true);
             connection.close();
         }
-    }
-
-    private Connection connectionToDataBase() {
-        Connection connection = null;
-
-        try {
-            connection = postgresUtil.getConnection();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception!!!");
-        }
-        return connection;
     }
 }

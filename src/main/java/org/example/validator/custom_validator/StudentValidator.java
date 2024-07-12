@@ -42,7 +42,7 @@ public class StudentValidator implements ConstraintValidator<EmailUniquenessChec
     }
 
     public boolean isValidID(int id) throws SQLException {
-        Connection connection = connectionToDataBase();
+        Connection connection = postgresUtil.getConnection();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -88,7 +88,7 @@ public class StudentValidator implements ConstraintValidator<EmailUniquenessChec
      * @throws SQLException if a SQL-error occurs when executing a query
      */
     private boolean userExists(String sqlQuery, String email) throws SQLException {
-        Connection connection = connectionToDataBase();
+        Connection connection = postgresUtil.getConnection();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -121,18 +121,5 @@ public class StudentValidator implements ConstraintValidator<EmailUniquenessChec
             }
         }
         return exists;
-    }
-
-    private Connection connectionToDataBase() {
-        Connection connection = null;
-
-        try {
-            connection = postgresUtil.getConnection();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("SQL Exception!!!");
-        }
-        return connection;
     }
 }
